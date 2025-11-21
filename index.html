@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Pipe Art Game - Phase 7 (Fixed Bends + Lock on Complete)</title>
+    <title>Pipe Art Game - Phase 7 (Clear on Node Click)</title>
     <style>
       body {
         margin: 0;
@@ -149,11 +149,17 @@
         );
 
         if (node) {
-          // If this color already locked (completed), ignore starting new draw
+          // If this color already locked (completed), clicking the node clears it (unlock)
           if (gameState.locked[node.color]) {
+            gameState.paths[node.color] = [];
+            gameState.locked[node.color] = false;
+            // stop any drag (user clicked to clear)
+            gameState.isDragging = false;
+            gameState.activeColor = null;
             return;
           }
 
+          // If not locked, start drawing from this node
           gameState.isDragging = true;
           gameState.activeColor = node.color;
           // When starting, reset path to just the start node
